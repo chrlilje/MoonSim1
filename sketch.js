@@ -14,7 +14,10 @@ function setup() {
 
   //Setup a settimeout function to create track dots
   let interval = setInterval(() => {
-    trackDots.push(new trackDot(gemini.x, gemini.y, 5));
+    if(deltaTime < 20){
+      trackDots.push(new trackDot(gemini.x, gemini.y, 5));
+
+    }
     // remove the first element of the array if it is too long
     if(trackDots.length > 64) {
       trackDots.shift();
@@ -25,18 +28,23 @@ function setup() {
 function draw() {
   background(220);
 
-  moon.update();
-  drawPlanet(moon);
-
-  gemini.update();
-  drawSpaceship(gemini);
-
-  gravitationalPull(moon, gemini);
-
-  // Draw the track dots
-  for(let dots of trackDots) {
-    ellipse(dots.x, dots.y, dots.r, dots.r);
-  }
+  // if deltaTime is < 20 we update
+  // TO handle the case when the window is not in focus
+  if(deltaTime < 20) {
+    moon.update();
+    drawPlanet(moon);
+  
+    gemini.update();
+    drawSpaceship(gemini);
+  
+    gravitationalPull(moon, gemini);
+  
+    // Draw the track dots
+    for(let dots of trackDots) {
+      ellipse(dots.x, dots.y, dots.r, dots.r);
+    }
+   }
+ 
 }
 
 
